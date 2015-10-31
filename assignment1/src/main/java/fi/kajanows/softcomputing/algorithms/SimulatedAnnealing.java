@@ -2,6 +2,8 @@ package fi.kajanows.softcomputing.algorithms;
 
 import java.util.Random;
 
+import fi.kajanows.softcomputing.algorithms.dto.Point;
+
 /**
  * Created by kjanowsk on 2015-10-30.
  */
@@ -20,20 +22,23 @@ public class SimulatedAnnealing {
         this.max_x = max_x;
     }
 
-    public double findMaximum(final SingleVariableFunction function) {
+    public Point findOptimum(final SingleVariableFunction function) {
+        return findOptimum(function, getRandom(min_x, max_x));
+    }
+
+    public Point findOptimum(final SingleVariableFunction function, double current_x) {
         double temperature = startingTemperature;
-        double current_x = getRandom(min_x, max_x);
         while (temperature > 0.00001) {
-            double newX = getNewNeigbour(current_x, function, temperature);
+            double newX = getNewNeighbour(current_x, function, temperature);
             if (shouldMoveToTheNewX(current_x, newX, temperature, function)) {
                 current_x = newX;
             }
             temperature *= coolingRate;
         }
-        return function.calculate(current_x);
+        return new Point(current_x, function.calculate(current_x));
     }
 
-    private double getNewNeigbour(double x, SingleVariableFunction function, double temp) {
+    private double getNewNeighbour(final double x, SingleVariableFunction function, final double temp) {
         for (int i = 0; i < 1000; i++) {
             double newX = getRandom(min_x, max_x);
             double currentE = function.calculate(x);
@@ -50,11 +55,11 @@ public class SimulatedAnnealing {
         return rangeMin + (rangeMax - rangeMin) * random.nextDouble();
     }
 
-    private boolean shouldMoveToTheNewX(double x, double newX, double temp, SingleVariableFunction function) {
+    private boolean shouldMoveToTheNewX(final double x, final double newX, final double temp, final SingleVariableFunction function) {
         return acceptanceProbability(function.calculate(x), function.calculate(newX), temp) >= random.nextDouble();
     }
 
-    private double acceptanceProbability(double fx1, double fx2, double temp) {
+    private double acceptanceProbability(final double fx1, final double fx2, final double temp) {
         if (fx2 > fx1) {
             return 1;
         }
