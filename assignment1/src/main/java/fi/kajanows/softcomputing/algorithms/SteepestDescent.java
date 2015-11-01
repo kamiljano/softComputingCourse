@@ -1,6 +1,6 @@
 package fi.kajanows.softcomputing.algorithms;
 
-import fi.kajanows.softcomputing.algorithms.dto.Point;
+import fi.kajanows.softcomputing.algorithms.dto.Point2D;
 
 /**
  * Created by kjanowsk on 2015-10-31.
@@ -9,9 +9,9 @@ public class SteepestDescent {
 
     private final double precision;
     private final double stepSize;
-    private final Point startingPoint;
+    private final Point2D startingPoint;
 
-    public SteepestDescent(final double precision, final double stepSize, final Point startingPoint) {
+    public SteepestDescent(final double precision, final double stepSize, final Point2D startingPoint) {
         this.precision = precision;
         this.stepSize = stepSize;
         this.startingPoint = startingPoint;
@@ -33,17 +33,17 @@ public class SteepestDescent {
         return x2 - stepSize * der2(x2);
     }
 
-    private boolean shouldIterate(final Point oldPoint, final Point newPoint) {
+    private boolean shouldIterate(final Point2D oldPoint, final Point2D newPoint) {
         return (Math.abs(newPoint.getX() - oldPoint.getX()) + Math.abs(newPoint.getY() - oldPoint.getY())) > precision;
     }
 
-    private Point calculateNewPosition(final Point oldPoint) {
-        return new Point(calculateNextPosition1(oldPoint.getX()), calculateNextPosition2(oldPoint.getY()));
+    private Point2D calculateNewPosition(final Point2D oldPoint) {
+        return new Point2D(calculateNextPosition1(oldPoint.getX()), calculateNextPosition2(oldPoint.getY()));
     }
 
-    public Point findLocalOptimum() {
-        final Point oldPoint = new Point();
-        final Point newPoint = new Point(startingPoint.getX(), startingPoint.getY());
+    public Point2D findLocalOptimum() {
+        final Point2D oldPoint = new Point2D();
+        final Point2D newPoint = new Point2D(startingPoint.getX(), startingPoint.getY());
         do {
             oldPoint.setLocation(newPoint);
             newPoint.setLocation(calculateNewPosition(oldPoint));
