@@ -37,7 +37,7 @@ public class IntegerIndividual implements Individual<IntegerIndividual> {
 
     private String toBinary(int num) {
         String bin = Integer.toBinaryString(num);
-        while (bin.length() < 32) {
+        while (bin.length() < 8) {
             bin = "0" + bin;
         }
         return bin;
@@ -52,6 +52,6 @@ public class IntegerIndividual implements Individual<IntegerIndividual> {
         for (int x = 0; x < thisGenes.length(); x++) {
             babyGenes.append(shouldUseThisGene(x, xRandom) ? thisGenes.charAt(x) : iGenes.charAt(x));
         }
-        return new IntegerIndividual(Integer.parseUnsignedInt(babyGenes.toString(), 2));
+        return new IntegerIndividual(Integer.parseInt(babyGenes.toString(), 2));
     }
 }
