@@ -1,5 +1,8 @@
 package fi.kajanows.softcomputing.algorithms;
 
+import fi.kajanows.softcomputing.algorithms.individuals.Individual;
+import fi.kajanows.softcomputing.algorithms.individuals.IndividualFunction;
+
 import java.util.Random;
 
 /**
@@ -74,6 +77,18 @@ public class DifferentialEvolution {
         return function.calculate(baby) < function.calculate(father);
     }
 
+    private Individual findTheBestOfPopulation() {
+        Individual best = null;
+        for (Individual individual : individuals) {
+            if (best == null) {
+                best = individual;
+            } else if (babyIsBetterThanFather(individual, best)) {
+                best = individual;
+            }
+        }
+        return best;
+    }
+
     public Individual findOptimum() {
         Individual baby = null;
         for (int i = 0; i < numberOfGenerations; i++) {
@@ -85,6 +100,6 @@ public class DifferentialEvolution {
                 replaceFatherWithBaby(father, baby);
             }
         }
-        return baby;
+        return findTheBestOfPopulation();
     }
 }
